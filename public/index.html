@@ -103,7 +103,7 @@
         formData.append('audio', fileInput.files[0]);
         
         startBtn.disabled = true;
-        status.innerText = "⏳ Procesando con Inteligencia Artificial...";
+        status.innerText = "⏳ Procesando Transcripción...";
 
         try {
             const res = await fetch('/api/transcribe', { method: 'POST', body: formData });
