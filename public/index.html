@@ -1,132 +1,234 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transcriptor AI - Yeshua la Torá Viviente</title>
+    <script src="https://unpkg.com/lamejs@1.2.0/lame.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root {
-            --primary: #1e293b;
-            --accent: #3b82f6;
-            --bg: #f1f5f9;
-        }
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: var(--bg); 
-            margin: 0; padding: 20px;
-            display: flex; justify-content: center;
-        }
-        .container { 
-            background: white; 
-            max-width: 700px; width: 100%;
-            padding: 30px; border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        /* Estilo para el Logo */
-        .header-logo {
-            width: 200px;
-            height: 200px;
-            margin-bottom: 10px;
-            object-fit: contain;
-        }
-        h1 { color: var(--primary); margin-bottom: 5px; font-size: 24px; }
-        .subtitle { color: #64748b; margin-bottom: 30px; font-size: 14px; }
-        
-        .upload-box {
-            border: 2px dashed #cbd5e1;
-            padding: 30px; border-radius: 15px;
-            cursor: pointer; transition: 0.3s;
-            background: #fafafa;
-        }
-        .upload-box:hover { border-color: var(--accent); background: #f0f7ff; }
-        
-        .btn {
-            background: var(--accent); color: white;
-            border: none; padding: 12px 25px;
-            border-radius: 8px; font-weight: 600;
-            cursor: pointer; width: 100%; margin-top: 15px;
-            transition: 0.3s;
-        }
-        .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-        
-        #editor {
-            width: 100%; height: 300px;
-            margin-top: 25px; padding: 15px;
-            border: 1px solid #e2e8f0; border-radius: 10px;
-            display: none; box-sizing: border-box;
-            font-size: 16px; line-height: 1.5;
-        }
-        .btn-pdf { background: #10b981; display: none; }
-        #status { margin-top: 15px; font-size: 14px; color: var(--accent); }
+      :root {
+        --primary: #1e293b;
+        --accent: #3b82f6;
+        --bg: #f1f5f9;
+      }
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: var(--bg);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        max-width: 700px;
+        width: 100%;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+      /* Estilo para el Logo */
+      .header-logo {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        object-fit: contain;
+      }
+      h1 {
+        color: var(--primary);
+        margin-bottom: 5px;
+        font-size: 24px;
+      }
+      .subtitle {
+        color: #64748b;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+
+      .upload-box {
+        border: 2px dashed #cbd5e1;
+        padding: 30px;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+        background: #fafafa;
+      }
+      .upload-box:hover {
+        border-color: var(--accent);
+        background: #f0f7ff;
+      }
+
+      .btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+        transition: 0.3s;
+      }
+      .btn:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+      }
+
+      #editor {
+        width: 100%;
+        height: 300px;
+        margin-top: 25px;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        display: none;
+        box-sizing: border-box;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .btn-pdf {
+        background: #10b981;
+        display: none;
+      }
+      #status {
+        margin-top: 15px;
+        font-size: 14px;
+        color: var(--accent);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <img src="logo-leon.png" alt="Logo" class="header-logo" />
 
-<div class="container">
-    <img src="logo-leon.png" alt="Logo" class="header-logo">
-    
-    <h1>Transcriptor</h1>
-    <p class="subtitle">Yeshua la Torá Viviente</p>
+      <h1>Transcriptor</h1>
+      <p class="subtitle">Yeshua la Torá Viviente</p>
 
-    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+      <div
+        class="upload-box"
+        onclick="document.getElementById('fileInput').click()"
+      >
         <p id="fileText">📂 Haz clic para seleccionar audio desde tu PC</p>
-        <input type="file" id="fileInput" accept="audio/*" style="display:none">
+        <input
+          type="file"
+          id="fileInput"
+          accept="audio/*"
+          style="display: none"
+        />
+      </div>
+
+      <div id="status"></div>
+
+      <button id="startBtn" class="btn" disabled>Iniciar Transcripción</button>
+
+      <textarea id="editor"></textarea>
+
+      <button id="pdfBtn" class="btn btn-pdf">Descargar como PDF</button>
     </div>
 
-    <div id="status"></div>
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const startBtn = document.getElementById("startBtn");
+      const status = document.getElementById("status");
+      const editor = document.getElementById("editor");
+      const pdfBtn = document.getElementById("pdfBtn");
 
-    <button id="startBtn" class="btn" disabled>Iniciar Transcripción</button>
-    
-    <textarea id="editor"></textarea>
-    
-    <button id="pdfBtn" class="btn btn-pdf">Descargar como PDF</button>
-</div>
-
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const startBtn = document.getElementById('startBtn');
-    const status = document.getElementById('status');
-    const editor = document.getElementById('editor');
-    const pdfBtn = document.getElementById('pdfBtn');
-
-    fileInput.onchange = () => {
-        if(fileInput.files.length > 0) {
-            document.getElementById('fileText').innerText = "✅ " + fileInput.files[0].name;
-            startBtn.disabled = false;
+      fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+          document.getElementById("fileText").innerText =
+            "✅ " + fileInput.files[0].name;
+          startBtn.disabled = false;
         }
-    };
+      };
 
-    startBtn.onclick = async () => {
-        const formData = new FormData();
-        formData.append('audio', fileInput.files[0]);
-        
+      async function splitAudioToMp3(file, chunkMinutes = 8, bitrate = 64) {
+        const arrayBuffer = await file.arrayBuffer();
+        const audioCtx = new AudioContext();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+        const sampleRate = audioBuffer.sampleRate;
+        const chunkSize = chunkMinutes * 60 * sampleRate;
+        const channelData = audioBuffer.getChannelData(0);
+
+        const mp3Chunks = [];
+        const mp3Encoder = new lamejs.Mp3Encoder(1, sampleRate, bitrate);
+
+        for (let i = 0; i < channelData.length; i += chunkSize) {
+          const slice = channelData.subarray(i, i + chunkSize);
+          const samples = new Int16Array(slice.length);
+
+          for (let j = 0; j < slice.length; j++) {
+            samples[j] = Math.max(-1, Math.min(1, slice[j])) * 32767;
+          }
+
+          const mp3buf = mp3Encoder.encodeBuffer(samples);
+          const endBuf = mp3Encoder.flush();
+
+          const blob = new Blob([mp3buf, endBuf], { type: "audio/mp3" });
+          mp3Chunks.push(blob);
+        }
+
+        return mp3Chunks;
+      }
+
+      startBtn.onclick = async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
         startBtn.disabled = true;
-        status.innerText = "⏳ Procesando Transcripción...";
+        editor.style.display = "none";
+        pdfBtn.style.display = "none";
+
+        status.innerText = "🎧 Dividiendo y optimizando audio...";
 
         try {
-            const res = await fetch('/api/transcribe', { method: 'POST', body: formData });
-            const data = await res.json();
-            
-            if(data.text) {
-                status.innerText = "✨ Transcripción lista";
-                editor.value = data.text;
-                editor.style.display = "block";
-                pdfBtn.style.display = "block";
-            }
-        } catch (e) {
-            status.innerText = "❌ Error al conectar";
-            startBtn.disabled = false;
-        }
-    };
+          // 1️⃣ Dividir y convertir a MP3
+          const chunks = await splitAudioToMp3(file, 8, 64);
+          let fullText = "";
 
-    // Lógica profesional de PDF (Multipage)
-    pdfBtn.onclick = () => {
+          // 2️⃣ Enviar cada chunk a Whisper
+          for (let i = 0; i < chunks.length; i++) {
+            status.innerText = `🧠 Transcribiendo parte ${i + 1} de ${
+              chunks.length
+            }...`;
+
+            const formData = new FormData();
+            formData.append("audio", chunks[i], `chunk-${i + 1}.mp3`);
+
+            const res = await fetch("/api/transcribe", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!res.ok) throw new Error("Error en transcripción");
+
+            const data = await res.json();
+            if (data.text) {
+              fullText += data.text + "\n\n";
+            }
+          }
+
+          // 3️⃣ Mostrar resultado final
+          status.innerText = "✨ Transcripción completa";
+          editor.value = fullText.trim();
+          editor.style.display = "block";
+          pdfBtn.style.display = "block";
+        } catch (e) {
+          console.error(e);
+          status.innerText = "❌ Error durante el proceso";
+          startBtn.disabled = false;
+        }
+      };
+
+      // Lógica profesional de PDF (Multipage)
+      pdfBtn.onclick = () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const margin = 20;
-        const width = doc.internal.pageSize.getWidth() - (margin * 2);
+        const width = doc.internal.pageSize.getWidth() - margin * 2;
         const lines = doc.splitTextToSize(editor.value, width);
         let y = 25;
 
@@ -135,14 +237,16 @@
         y += 15;
         doc.setFontSize(12);
 
-        lines.forEach(line => {
-            if (y > 280) { doc.addPage(); y = 20; }
-            doc.text(line, margin, y);
-            y += 7;
+        lines.forEach((line) => {
+          if (y > 280) {
+            doc.addPage();
+            y = 20;
+          }
+          doc.text(line, margin, y);
+          y += 7;
         });
         doc.save("transcripcion.pdf");
-    };
-</script>
-
-</body>
+      };
+    </script>
+  </body>
 </html>
